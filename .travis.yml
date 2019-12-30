@@ -3,21 +3,16 @@ language: node_js
 node_js:
   - 10 # use nodejs v10 LTS
 cache: npm
-before_install:
-  - git config --global user.name "MangoIce"
-  - git config --global user.email "raodunwei@163.com"
-  - npm install -g hexo-cli
-install:
-  - npm i
 branches:
   only:
     - master # build master branch only
 script:
-  - hexo clean
   - hexo generate # generate static files
-after_success:
-  - cd ./public
-  - git init
-  - git add --all .
-  - git commit -m "Travis CI Auto Builder"
-  - git push --quiet --force https://$GH_TOKEN@github.com/Mango-Ice/mangoice.github.io.git master
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GH_TOKEN
+  keep-history: true
+  on:
+    branch: master
+  local-dir: public
